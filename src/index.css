@@ -1,6 +1,12 @@
 html {
   --libre: "Libre Baskerville", serif;
   --lora: "Lora", serif;
+  --color-white: #e6e6e9;
+  --color-brown: #636366;
+  --color-green: #88a2aa;
+  --color-lightgreen: #c8e6c9;
+  --color-pink: #ffcdd2;
+  --color-yellow: #feedaf;
 }
 
 body {
