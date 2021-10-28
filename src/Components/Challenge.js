@@ -1,17 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button";
-import { ProgressBar } from "primereact/progressbar";
-import { Calendar } from "primereact/calendar";
 import { MultiSelect } from "primereact/multiselect";
-import { Badge } from "primereact/badge";
 import { Dialog } from "primereact/dialog";
 import axios from "axios";
 
-import ChallengeDiv from "./ChallengeStyle";
 import "./challengestyle.css";
 
 function Challenge() {
@@ -39,7 +33,6 @@ function Challenge() {
           };
           newData.push(newMovie);
         });
-        console.log(data);
         setData(newData);
       } catch (err) {
         console.log("There was an error retrieving the data");
@@ -53,23 +46,22 @@ function Challenge() {
     setDisplayModal(true);
   }, [selection]);
 
+  // ON CHANGE HANDLERS
   const onDirectorChange = (e) => {
     dt.current.filter(e.value, "director", "in");
-    console.log(e);
     setSelectedDirector(e.value);
   };
 
   const onCertificationChange = (e) => {
-    console.log(e);
     dt.current.filter(e.value, "certification", "equals");
     setSelectedCertification(e.value);
   };
 
+  // TEMPLATES FOR THE MAIN BODY OF THE TABLE
   const titleBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title"></span>
-        {rowData.title}
+        <span className="p-column-title">{rowData.title}</span>
       </React.Fragment>
     );
   };
@@ -77,8 +69,7 @@ function Challenge() {
   const yearBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title"></span>
-        {rowData.releaseDate}
+        <span className="p-column-title">{rowData.releaseDate}</span>
       </React.Fragment>
     );
   };
@@ -86,8 +77,7 @@ function Challenge() {
   const timeBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title"></span>
-        {rowData.length}
+        <span className="p-column-title">{rowData.length}</span>
       </React.Fragment>
     );
   };
@@ -109,10 +99,25 @@ function Challenge() {
     );
   };
 
+  // FILTERS ARRAY TO JUST ONE MOVIE FOR EACH NAME SO THAT THE MULTISELECT DOES NOT LIST MORE THAN ONE INSTANCE OF THE NAME
+  const directorFilterToOne = () => {
+    const newData = [];
+    const names = [];
+
+    data.forEach((movie) => {
+      if (!names.includes(movie.director)) {
+        names.push(movie.director);
+        newData.push(movie);
+      }
+    });
+
+    return newData;
+  };
+
   const directorFilter = (
     <MultiSelect
       value={selectedDirector}
-      options={data}
+      options={directorFilterToOne()}
       itemTemplate={directorItemsTemplate}
       onChange={onDirectorChange}
       optionLabel="director"
@@ -141,14 +146,16 @@ function Challenge() {
 
   const certificationItemTemplate = (option) => {
     return (
-      <span
-        className={`customer-badge status-${option
-          .toString()
-          .split(" ")
-          .join("-")
-          .toLowerCase()}`}
-      >
-        <div>{option}</div>
+      <span>
+        <div
+          className={`certification-item customer-badge status-${option
+            .toString()
+            .split(" ")
+            .join("-")
+            .toLowerCase()}`}
+        >
+          {option}
+        </div>
       </span>
     );
   };
@@ -168,8 +175,7 @@ function Challenge() {
   const ratingBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <span className="p-column-title"></span>
-        {rowData.rating}%
+        <span className="p-column-title">{rowData.rating}%</span>
       </React.Fragment>
     );
   };
@@ -178,15 +184,23 @@ function Challenge() {
     return ((rating / 5) * 100).toFixed(2);
   };
 
+  const renderModalFooter = () => {
+    return (
+      <p className="modal-footer">
+        All movie data are from Wikipedia and IMDb.
+      </p>
+    );
+  };
+
   const renderDialogBox = () => {
     return (
       <Dialog
         header="MOVIE DETAILS"
         visible={displayModal}
         modal={true}
-        style={{ width: "500px", height: "800px" }}
+        style={{ width: "600px", height: "800px" }}
         position={"right"}
-        // footer={renderFooter("displayModal")}
+        footer={renderModalFooter}
         onHide={() => setDisplayModal(false)}
       >
         <div className="green-box">
@@ -200,15 +214,15 @@ function Challenge() {
               return <div className="dialog-cast-member">{member}</div>;
             })}
           </div>
-          <div>
-            Genre:{" "}
+          <div className="dialog-box-genre">
+            <p className="dialog-cast-title">Genre: </p>
             {selection.genre.map((genre) => (
-              <div>{genre}</div>
+              <div className="dialog-cast-member">{genre}</div>
             ))}
           </div>
-          <div>
-            <p>Plot:</p>
-            <p>{selection.plot}</p>
+          <div className="dialog-box-plot">
+            <p className="dialog-cast-title">Plot:</p>
+            <p className="dialog-plot-text">{selection.plot}</p>
           </div>
         </div>
       </Dialog>
@@ -216,7 +230,7 @@ function Challenge() {
   };
 
   return (
-    <ChallengeDiv>
+    <div className="mainDiv">
       <h1 className="title">Favorite Movie List</h1>
       {selection ? renderDialogBox() : null}
       <div className="table">
@@ -229,11 +243,10 @@ function Challenge() {
             // header={header}
             className="p-datatable-customers"
             //   globalFilter={this.state.globalFilter}
-            emptyMessage="No movies found."
+            emptyMessage="No movies found"
             // selectionMode="radiobutton"
             selection={selection}
             onSelectionChange={(e) => {
-              console.log(e);
               setSelection(e.value);
             }}
             // dataKey="id"
@@ -289,7 +302,7 @@ function Challenge() {
           </DataTable>
         </div>
       </div>
-    </ChallengeDiv>
+    </div>
   );
 }
 

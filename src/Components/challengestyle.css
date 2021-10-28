@@ -1,22 +1,33 @@
 body {
   background-color: var(--color-white);
   height: 100%;
-  font-family: var(--libre);
+  font-family: sans-serif;
+}
+
+.mainDiv {
+  min-width: 1600px;
 }
 
 .title {
-  font-family: var(--lora);
+  font-family: var(--libre);
   font-weight: 400;
   font-size: 2.5rem;
   color: var(--color-brown);
   text-align: center;
-  padding: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
   margin: 0;
 }
 
 .table {
   width: 90%;
   margin: auto;
+}
+
+.p-column-title,
+.image-text,
+.p-column-filter {
+  font-family: sans-serif;
 }
 
 .customer-badge {
@@ -37,14 +48,25 @@ body {
   color: #8a5340;
 }
 
+.certification-item {
+  width: min-content;
+}
+
 .status-14-accompaniment {
   background-color: #ffcdd2;
   color: #c63737;
 }
 
+/* .modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+} */
+
 .green-box {
   background-color: #88a2aa;
   padding: 1rem;
+  border-radius: 5px;
 }
 
 .dialog-box-title {
@@ -72,6 +94,7 @@ body {
 .dialog-cast-title {
   font-family: var(--libre);
   margin: 0;
+  font-size: 1.2rem;
 }
 
 .dialog-cast-member {
@@ -79,4 +102,28 @@ body {
   padding: 0.5rem;
   border-radius: 50px;
   margin: 3px 5px;
+  font-family: var(--lora);
+}
+
+.dialog-box-genre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+
+.dialog-box-plot {
+  margin-top: 1rem;
+}
+
+.dialog-plot-text {
+  margin: 0;
+  margin-top: 0.5rem;
+  font-family: var(--lora);
+  line-height: 1.5rem;
+}
+
+.modal-footer {
+  margin: 0;
+  font-family: sans-serif;
 }
